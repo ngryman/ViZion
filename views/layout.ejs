@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="/stylesheets/jquery-ui.css" rel="stylesheet" type="text/css">
+        <link href="/stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+        <link href="/stylesheets/vizion.css" rel="stylesheet" type="text/css">
+        <%- renderStyleSheetTags(stylesheets) %>
+        <script src="/javascripts/libs/jquery.min.js"></script>
+        <script src="/javascripts/libs/jquery-ui.min.js"></script>
+        <script src="/javascripts/libs/bootstrap.min.js"></script>
+        <script src="/javascripts/libs/socket.io/socket.io.min.js"></script>
+        <script src="/javascripts/vizion.js"></script>
+        <script src="/javascripts/remote.js"></script>
+        <%- renderScriptsTags(scripts) %>
+        <title>ViZion - <%= modelview.title %></title>
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <a class="brand" href="/">ViZion</a>
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li<% if(modelview.navSelect == 'disk') { %> class="active" <% } %>><a href="/disk">Disk</a></li>
+                            <li<% if(modelview.navSelect == 'youtube') { %> class="active" <% } %>><a href="/youtube">Youtube</a></li>
+                        </ul>
+                        <p id="loading" class="pull-right" style="display: none;">Loading...</p>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="hero-unit">
+                <h1><%= modelview.title %></h1>
+                <p><%= modelview.description %></p>
+            </div>
+            <%- body %>
+            <hr>
+                            <!--    <footer>
+                            </footer>-->
+        </div>
+    </body>
+</html>

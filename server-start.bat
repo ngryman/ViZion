@@ -1,0 +1,1 @@
+nodemon --watch modules/disk --watch modules --watch routes --watch server.js server.js

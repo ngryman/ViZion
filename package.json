@@ -1,0 +1,16 @@
+{
+  "name": "ViZion",
+  "version": "0.1.0",
+  "author": "Fabien ROGERET <fabien.rogeret@gmail.com>",
+  "description": "OS for multimedia box in HTML and running on Node.JS",
+  "main": "./server.js",  
+  "dependencies" : {
+    "express": "2.5.x",
+    "ejs": "0.7.x",
+    "socket.io": "0.9.x"
+  },
+  "noAnalyze": true,
+  "engines": {
+    "node": ">=0.8.3"
+  }
+}

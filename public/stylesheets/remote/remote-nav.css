@@ -1,0 +1,12 @@
+#cross {
+    width: 100%;
+}
+
+#cross > div {
+    width: 100%;
+    text-align: center;
+}
+
+#cross .second-line > div {
+    display: inline-block;
+}
