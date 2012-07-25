@@ -50,6 +50,15 @@ function Disk() {
             galleryCounts: false
         });
 
+        $('a.button-item').on('click', function() {
+            $.loadingStart();
+            disk.$selected = $(this);
+            disk.$disk.fadeOut('normal', function() {
+                disk.listFolder(disk.$selected.children('input').val());                
+            });
+            return false;
+        });
+
         disk.$disk.fadeIn();
 
         $.loadingStop();
@@ -60,18 +69,18 @@ function Disk() {
     });
 
     remote.onEnter = function($selected) {
-        $.loadingStart();
-        disk.$disk.fadeOut('normal', function() {
-            socket.emit('disk-list-folders', $selected.children('input').val());
-        });
+        $selected.click();
     };
 
     return {
         init: function() {
             this.$disk = $('#disk');
         },
-        listDrives: function(){
+        listDrives: function() {
             socket.emit('disk-list-drives');
+        },
+        listFolder: function(folder) {
+            socket.emit('disk-list-folders', folder);
         }
     };
 

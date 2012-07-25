@@ -58,7 +58,7 @@ function Disk() {
 
                 if(folder.trim() === '')
                     return listDrives();
-
+                console.log(folder);
                 disk.fs.readdir(folder, function(err, items) {
 
                     var dirItems = new Array();
