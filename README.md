@@ -9,10 +9,14 @@ Disk: Only work on Windows actually, unix world one day...
 
 ## Installation
 
-Just run server-start.bat
-
+    $ npm install
+	
 ## Quick Start
 
+Launch:
+
+    $ node server.js
+	
 Open your browser and navigate to http://servernane:3000. For the remote, navigate to http://servernane:3000 too.
 
 ## Behavior
