@@ -1,3 +1,5 @@
 #ignore node_modules folder. Use npm install to get this folder updated
 server-start.bat
 node_modules/
+web.config
+server.js.*/

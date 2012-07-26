@@ -12,7 +12,6 @@ function Disk() {
         remote.changeRemote('remote-nav');
 
         this.io.sockets.on('connection', function(socket) {
-            disk.socket = socket;
 
             socket.on('disk-list-drives', listDrives);
             socket.on('disk-list-folders', listFolders);
@@ -42,7 +41,7 @@ function Disk() {
                         }
                     }
                     var directory = new disk.DirectoryNS.DirectoryInfo('', dirItems);
-                    disk.socket.emit('disk-list', JSON.stringify(directory));
+                    socket.emit('disk-list', JSON.stringify(directory));
                 });
             }
 
@@ -83,7 +82,7 @@ function Disk() {
                     }
 
                     var directory = new disk.DirectoryNS.DirectoryInfo(folder, dirItems);
-                    disk.socket.emit('disk-list', JSON.stringify(directory));
+                    socket.emit('disk-list', JSON.stringify(directory));
                 });
             }
         });

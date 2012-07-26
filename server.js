@@ -70,4 +70,4 @@ remote.init(io);
 disk.init(io, remote);
 
 app.listen(3000);
-
+console.log("info: ViZion server listening on port %d", app.address().port);
