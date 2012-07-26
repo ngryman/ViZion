@@ -1,3 +1,8 @@
+body {
+    position: relative;
+    padding-top: 90px;
+}
+
 .button-item.selected {
     box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75);
     border-radius: 20px;
@@ -6,8 +11,14 @@
 .button-item {
     display: inline-block;
     text-align: center;
+    margin-bottom: 10px;
+    padding: 10px;
 }
 
 #loading {
     margin-top: 10px;
+}
+
+.hero-unit {
+    padding: 30px;
 }

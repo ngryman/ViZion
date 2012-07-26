@@ -1,3 +1,57 @@
+function BreadCrumb() {
+
+    function join() {
+        
+    }
+
+    return {
+        parsePath: function(path) {
+
+            if(path.trim() === '') return;
+
+            var pathPart = path.split('\\');
+
+            var $bcRoot = $('#bc-root');
+            $bcRoot.text('');
+            if(pathPart.length)
+                $bcRoot.append('<a href="/disk">Disk</a> <span class="divider">/</span>').removeClass('active');
+            else
+                $bcRoot.append('Disk').addClass('active');
+
+            var $bc = $('.breadcrumb');
+            this.removeAllItemAfter('Disk');
+            for(var i = 0; i < pathPart.length; i++) {
+                var part = pathPart[i];
+                
+                if(i == pathPart.length - 1)
+                    $bc.append('<li class="active" id="bc-root">' + part + '</li>');
+                else
+                    $bc.append('<li><a href="#">' + part + '<input type="hidden" value="' + pathPart.slice(0,i+1).join('\\') + '"/></a> <span class="divider">/</span></li>')
+            }
+        },
+        //addItem: function(name) {
+        //    if(name.trim() === '')
+        //        return;
+
+        //    var $bc = $('.breadcrumb');
+        //    var $lastLi = $bc.children('li:last');
+        //    if($lastLi[0].id === 'bc-root') {
+        //        $bc.append('<li id="bc-root"></li>');
+        //        $lastLi.remove();
+        //    }
+
+        //    $('.breadcrumb').append('<li class="active">' + name + '</li></li>');
+        //},
+        removeItem: function(name) {
+            $('.breadcrumb li:contains(' + name + ')').remove();
+        },
+        removeAllItemAfter: function(name) {
+            $('.breadcrumb li:contains(' + name + ')').nextAll().remove();
+        }
+    }
+};
+$.breadcrumb = new BreadCrumb();
+
 function Disk() {
     //constructor
     this.$disk = {};
@@ -7,7 +61,7 @@ function Disk() {
 
         disk.$disk.children('div').remove();
 
-        $('p.path').text(d.path);
+        $.breadcrumb.parsePath(d.path);
 
         for(var ii in d.items) {
             var item = d.items[ii];
@@ -54,7 +108,7 @@ function Disk() {
             $.loadingStart();
             disk.$selected = $(this);
             disk.$disk.fadeOut('normal', function() {
-                disk.listFolder(disk.$selected.children('input').val());                
+                disk.listFolder(disk.$selected.children('input').val());
             });
             return false;
         });
@@ -71,6 +125,16 @@ function Disk() {
     remote.onEnter = function($selected) {
         $selected.click();
     };
+
+    remote.onReturn = function() {
+        $.loadingStart();
+        disk.$disk.fadeOut('normal', function() {
+            var p = $('p.path').text();
+            var sIndex = p.indexOf('\\');
+            p = p.substr(0, sIndex);
+            socket.emit('disk-list-folders', p);
+        });
+    }
 
     return {
         init: function() {

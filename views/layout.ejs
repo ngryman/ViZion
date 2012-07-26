@@ -26,11 +26,11 @@
                     <a class="brand" href="/">ViZion</a>
                     <div class="nav-collapse">
                         <ul class="nav">
-                            <li<% if(modelview.navSelect == 'disk') { %> class="active" <% } %>><a href="/disk">Disk</a></li>
-                            <li<% if(modelview.navSelect == 'youtube') { %> class="active" <% } %>><a href="/youtube">Youtube</a></li>
+                            <li <% if(modelview.navselect == 'disk') { %>class="active" <% } %> ><a href="/disk">Disk</a></li>
+                            <li <% if(modelview.navselect == 'youtube') { %>class="active" <% } %> ><a href="/youtube">Youtube</a></li>
                         </ul>
                         <p id="loading" class="pull-right" style="display: none;">Loading...</p>
-                    </div><!--/.nav-collapse -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -39,10 +39,16 @@
                 <h1><%= modelview.title %></h1>
                 <p><%= modelview.description %></p>
             </div>
+            <ul class="breadcrumb">
+                <% if(modelview.navSelect) { %>
+                    <li><a href="/">Home</a> <span class="divider">/</span></li>
+                    <li class="active" id="bc-root"><%= modelview.title %></li>
+                <% } %>
+            </ul>
             <%- body %>
             <hr>
                             <!--    <footer>
-                            </footer>-->
+                                            </footer>-->
         </div>
     </body>
 </html>

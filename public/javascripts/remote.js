@@ -12,6 +12,7 @@ Remote = function() {
             $selected.click();
     };
     this.onRefresh = function() { };
+    this.onReturn = function() { };
 
     function selectItemLR(position) {
         var indexSelected = $('a.selected').index('a');
@@ -74,6 +75,10 @@ Remote = function() {
 
     socket.on('remote-cross-refresh', function() {
         remote.onRefresh();
+    });
+
+    socket.on('remote-cross-return', function() {
+        remote.onReturn();
     });
 
     return this;

@@ -14,3 +14,7 @@ Just run server-start.bat
 ## Quick Start
 
 Open your browser and navigate to http://servernane:3000. For the remote, navigate to http://servernane:3000 too.
+
+## Behavior
+
+ViZion is controllable by mouse or by phone (as remote controller)

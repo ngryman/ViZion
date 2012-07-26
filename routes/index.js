@@ -11,7 +11,7 @@ exports.index = function(req, res) {
         return exports.remote(req, res);
 
     var model = {
-        title: '',
+        title: 'ViZion',
         description: 'Enjoy your multimedia.'
     };
 
@@ -23,6 +23,7 @@ exports.disk = function(req, res) {
     var model = {
         title: 'Disk',
         navSelect: 'disk',
+        link: '/disk',
         description: 'Explore your drives and read movies, musics and photos.'
     };
 
