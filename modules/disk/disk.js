@@ -47,7 +47,7 @@ function Disk() {
             }
 
             function isVideo(file) {
-                return /.avi/i.test(file);
+                return /.avi|.mp4|.mkv/i.test(file);
             }
 
             function listFolders(folder) {

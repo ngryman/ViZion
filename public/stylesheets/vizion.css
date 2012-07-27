@@ -10,6 +10,11 @@ body {
 .button-item.selected {
     box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.75);
     border-radius: 20px;
+    text-shadow: none;
+}
+
+.breadcrumb a.selected, a.selected, .navbar .nav > li > a.selected, .navbar .nav-collapse.in .nav li > a.selected, .navbar a.selected {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #33B5E5, 0 0 70px #33B5E5, 0 0 80px #33B5E5, 0 0 100px #33B5E5, 0 0 150px #33B5E5;
 }
 
 .button-item {

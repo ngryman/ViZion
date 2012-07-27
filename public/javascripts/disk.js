@@ -145,31 +145,38 @@ function Disk() {
     };
 
     remote.onPause = function() {
-        document.vlc.playlist.togglePause();
+        if(document.vlc)
+            document.vlc.playlist.togglePause();
     };
 
     remote.onPlay = function() {
-        document.vlc.playlist.play();
+        if(document.vlc)
+            document.vlc.playlist.play();
     };
 
     remote.onMute = function() {
-        document.vlc.audio.mute = true;
+        if(document.vlc)
+            document.vlc.audio.mute = true;
     };
 
     remote.onUnMute = function() {
-        document.vlc.audio.mute = false;
+        if(document.vlc)
+            document.vlc.audio.mute = false;
     };
 
     remote.onFastBackward = function() {
-        document.vlc.input.time -= 10000
+        if(document.vlc)
+            document.vlc.input.time -= 10000
     };
 
     remote.onFastForward = function() {
-        document.vlc.input.time += 10000
+        if(document.vlc)
+            document.vlc.input.time += 10000
     };
 
     remote.onFullscreen = function() {
-        document.vlc.video.toggleFullscreen();
+        if(document.vlc)
+            document.vlc.video.toggleFullscreen();
     };
 
     return {

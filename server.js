@@ -65,7 +65,7 @@ app.get('/remote', routes.remote);
 io.set("log level", 1);
 
 remote.init(io);
-disk.init(io, remote);
+disk.init(io);
 
 app.listen(3000);
 console.log("info: ViZion server listening on port %d", app.address().port);

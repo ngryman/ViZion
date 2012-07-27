@@ -24,10 +24,10 @@ Remote = function() {
     this.closeTime = function() { socket.emit('remote-closetime'); };
 
     function selectItemLR(position) {
-        var indexSelected = $('a.selected').index('a');
+        var indexSelected = $('a.selected').index('a:visible');
 
         if(position === 'right') {
-            if(indexSelected < $('a').length)
+            if(indexSelected < $('a:visible').length)
                 indexSelected++;
         }
         else {
@@ -37,8 +37,8 @@ Remote = function() {
         }
 
         $('a.selected').removeClass('selected');
-        $('a:eq(' + indexSelected + ')').addClass('selected');
-    }
+        $('a:visible:eq(' + indexSelected + ')').addClass('selected');
+    };
 
     socket.on('remote-fastbackward', function() {
         remote.onFastBackward();
@@ -73,30 +73,100 @@ Remote = function() {
     socket.on('remote-cross-down', function() {
         if(!remote.enableCross)
             return;
-        var $liSelected = $('.table li.selected');
 
-        var $li = findLiAt('down');
+        var $selected = $('.selected');
+        var offsetSelected = $selected.offset();
+        offsetSelected.middle = offsetSelected.left + ($selected.outerWidth(true) / 2);
 
-        if($li.length) {
-            $liSelected.removeClass('selected');
-            $li.addClass('selected');
-            scrollTo($li);
+        var indexSelected = $('a.selected').index('a:visible');
+        var $selectable = $('a:visible:gt(' + indexSelected + ')');
+
+        //find closest down item
+        var $toSelect, closestTop = 99999, closestLeft = 99999;
+        for(var i = 0; i < $selectable.length; i++) {
+            console.log(i);
+            var $select = $($selectable[i]);
+            var offset = $select.offset();
+
+            if(offset.top <= offsetSelected.top)
+                continue;
+
+            var topDiff = offset.top - offsetSelected.top;
+            offset.middle = offset.left + ($select.outerWidth(true) / 2);
+            var leftDiff = Math.abs(offset.middle - offsetSelected.middle);
+
+            if(topDiff < closestTop) {
+                closestTop = topDiff;
+                closestLeft = leftDiff;
+                $toSelect = $select;
+            }
+            else if(topDiff == closestTop) {
+                if(leftDiff < closestLeft) {
+                    closestLeft = leftDiff;
+                    $toSelect = $select;
+                }
+            }
+        }
+
+        if($toSelect) {
+            $selected.removeClass('selected');
+            $toSelect.addClass('selected');
+
+            scrollTo($toSelect);
         }
 
         remote.onCrossDown();
     });
 
+    function scrollTo($item) {
+        $('html, body').animate({
+            scrollTop: $item.offset().top - $item.outerHeight(true)
+        }, 2000);
+    }
+
     socket.on('remote-cross-up', function() {
         if(!remote.enableCross)
             return;
-        var $liSelected = $('.table li.selected');
 
-        var $li = findLiAt('up');
+        var $selected = $('.selected');
+        var offsetSelected = $selected.offset();
+        offsetSelected.middle = offsetSelected.left + ($selected.outerWidth(true) / 2);
+        offsetSelected.bottom = offsetSelected.top + $selected.outerHeight(true);
 
-        if($li.length) {
-            $liSelected.removeClass('selected');
-            $li.addClass('selected');
-            scrollTo($li);
+        var indexSelected = $('a.selected').index('a:visible');
+        var $selectable = $('a:visible:lt(' + indexSelected + ')');
+
+        //find closest up item
+        var $toSelect, closestBottom = 99999, closestLeft = 99999;
+        for(var i = $selectable.length - 1; i >= 0; i--) {
+            var $select = $($selectable[i]);
+            var offset = $select.offset();
+            offset.bottom = offset.top + $select.outerHeight(true);
+
+            if(offset.bottom >= offsetSelected.bottom)
+                continue;
+
+            var bottomDiff = offsetSelected.bottom - offset.bottom;
+
+            if(bottomDiff < closestBottom) {
+                closestBottom = bottomDiff;
+                $toSelect = $select;
+            }
+            else if(bottomDiff == closestBottom) {
+                offset.middle = offset.left + ($select.outerWidth(true) / 2);
+                var leftDiff = Math.abs(offsetSelected.middle - offset.middle);
+                if(leftDiff < closestLeft) {
+                    closestLeft = leftDiff;
+                    $toSelect = $select;
+                }
+            }
+        }
+
+        if($toSelect) {
+            $selected.removeClass('selected');
+            $toSelect.addClass('selected');
+
+            scrollTo($toSelect);
         }
 
         remote.onCrossUp();
