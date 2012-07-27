@@ -2,8 +2,9 @@ $(document).ready(function() {
 
     var socketUri = 'http://' + location.hostname + ':' + '4242';
     var socket = io.connect(socketUri);
-    var $time = $('#time-panel');
-    $time.css('top', $('.row:first').outerHeight(true));
+    var $panels = $('.panel');
+    $panels.css('top', $('table').offset().top /*$('.row:first').outerHeight(true)*/);
+    $panels.height($('table').outerHeight(true));
 
     socket.on('trueremote-opentime', function(totalTime) {
         $('#total-time').text(totalTime);
@@ -70,7 +71,7 @@ $(document).ready(function() {
     });
 
     $('#kb').click(function() {
-        alert('not yet implemented');
+        $('#keyboard-panel').toggle('clip', function() { $('#keyboard:visible').focus(); });
         return false;
     });
 

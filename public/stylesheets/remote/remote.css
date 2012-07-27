@@ -18,6 +18,15 @@ body {
     text-align: center;
 }
 
+/*tweak to enable GPU*/
+/** {
+    -webkit-transform: translatez(0);
+    -moz-transform: translatez(0);
+    -ms-transform: translatez(0);
+    -o-transform: translatez(0);
+    transform: translatez(0);
+}*/
+
 table {
     width: 100%;
 }
@@ -70,10 +79,15 @@ a {
     color: #fff;
 }
 
-#time-panel {
+.panel {
     border-top: solid 1px #353535;
     position: absolute;
     width: 100%;
     background: rgba(0, 0, 0, 0.9);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.panel input {
+    width: 100%;
+    font-size: 1em;
 }
