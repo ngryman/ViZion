@@ -1,5 +1,9 @@
 Remote = function() {
     //constructor
+    this.onFastBackward = function() { };
+    this.onPlay = function() { };
+    this.onPause = function() { };
+    this.onFastForward = function() { };
     this.onCrossRight = function() { };
     this.onCrossLeft = function() { };
     this.onCrossDown = function() { };
@@ -11,8 +15,11 @@ Remote = function() {
         else
             $selected.click();
     };
-    this.onRefresh = function() { };
     this.onReturn = function() { };
+    this.onFullscreen = function() { };
+    this.onMute = function() { };
+    this.onUnMute = function() { };
+    this.enableCross = true;
 
     function selectItemLR(position) {
         var indexSelected = $('a.selected').index('a');
@@ -31,17 +38,39 @@ Remote = function() {
         $('a:eq(' + indexSelected + ')').addClass('selected');
     }
 
+    socket.on('remote-fastbackward', function() {
+        remote.onFastBackward();
+    });
+
+    socket.on('remote-play', function() {
+        remote.onPlay();
+    });
+
+    socket.on('remote-pause', function() {
+        remote.onPause();
+    });
+
+    socket.on('remote-fastforward', function() {
+        remote.onFastForward();
+    });
+
     socket.on('remote-cross-right', function() {
+        if(!remote.enableCross)
+            return;
         selectItemLR('right');
         remote.onCrossRight();
     });
 
     socket.on('remote-cross-left', function() {
+        if(!remote.enableCross)
+            return;
         selectItemLR('left');
         remote.onCrossLeft();
     });
 
     socket.on('remote-cross-down', function() {
+        if(!remote.enableCross)
+            return;
         var $liSelected = $('.table li.selected');
 
         var $li = findLiAt('down');
@@ -56,6 +85,8 @@ Remote = function() {
     });
 
     socket.on('remote-cross-up', function() {
+        if(!remote.enableCross)
+            return;
         var $liSelected = $('.table li.selected');
 
         var $li = findLiAt('up');
@@ -69,16 +100,24 @@ Remote = function() {
         remote.onCrossUp();
     });
 
-    socket.on('remote-cross-enter', function() {
+    socket.on('remote-enter', function() {
         remote.onEnter($('a.selected'));
     });
 
-    socket.on('remote-cross-refresh', function() {
-        remote.onRefresh();
+    socket.on('remote-return', function() {
+        remote.onReturn();
     });
 
-    socket.on('remote-cross-return', function() {
-        remote.onReturn();
+    socket.on('remote-fullscreen', function() {
+        remote.onFullscreen();
+    });
+
+    socket.on('remote-mute', function() {
+        remote.onMute();
+    });
+
+    socket.on('remote-unmute', function() {
+        remote.onUnMute();
     });
 
     return this;

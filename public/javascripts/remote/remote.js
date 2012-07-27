@@ -4,7 +4,7 @@ $(document).ready(function() {
     var socket = io.connect(socketUri);
 
     $('#fb').click(function() {
-        socket.emit('trueremote-fastforward');
+        socket.emit('trueremote-fastbackward');
         return false;
     });
 
@@ -54,12 +54,26 @@ $(document).ready(function() {
     });
 
     $('#kb').click(function() {
-        socket.emit('trueremote-keyboard');
+        alert('not yet implemented');
+        return false;
+    });
+
+    $('#fs').click(function() {
+        socket.emit('trueremote-fullscreen');
         return false;
     });
 
     $('#mute').click(function() {
+        $(this).hide();
+        $('#unmute').show();
         socket.emit('trueremote-mute');
+        return false;
+    });
+
+    $('#unmute').click(function() {
+        $(this).hide();
+        $('#mute').show();
+        socket.emit('trueremote-unmute');
         return false;
     });
 

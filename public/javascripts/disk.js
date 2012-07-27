@@ -103,6 +103,7 @@ function Disk() {
             if($(this).attr('rel') === 'nyro') {
                 var src = $a.children(':hidden').val();
                 document.vlc.setAttribute('target', 'file:///' + src);
+                remote.enableCross = false;
                 socket.emit('remote-change-remote', 'remote-player');
             }
             else {
@@ -123,18 +124,53 @@ function Disk() {
     });
 
     remote.onEnter = function($selected) {
-        $selected.click();
+        if(!$.nmTop())
+            $selected.click();
     };
 
     remote.onReturn = function() {
-        $.loadingStart();
-        disk.$disk.fadeOut('normal', function() {
-            var p = $('p.path').text();
-            var sIndex = p.indexOf('\\');
-            p = p.substr(0, sIndex);
-            socket.emit('disk-list-folders', p);
-        });
-    }
+        if($.nmTop()) {
+            $.nmTop().close();
+            remote.enableCross = true;
+        }
+        else {
+            $.loadingStart();
+            disk.$disk.fadeOut('normal', function() {
+                var p = $('p.path').text();
+                var sIndex = p.indexOf('\\');
+                p = p.substr(0, sIndex);
+                socket.emit('disk-list-folders', p);
+            });
+        }
+    };
+
+    remote.onPause = function() {
+        document.vlc.playlist.togglePause();
+    };
+
+    remote.onPlay = function() {
+        document.vlc.playlist.play();
+    };
+
+    remote.onMute = function() {
+        document.vlc.audio.mute = true;
+    };
+
+    remote.onUnMute = function() {
+        document.vlc.audio.mute = false;
+    };
+
+    remote.onFastBackward = function() {
+        document.vlc.input.time -= 10000
+    };
+
+    remote.onFastForward = function() {
+        document.vlc.input.time += 10000
+    };
+
+    remote.onFullscreen = function() {
+        document.vlc.video.toggleFullscreen();
+    };
 
     return {
         init: function() {
