@@ -20,6 +20,8 @@ Remote = function() {
     this.onMute = function() { };
     this.onUnMute = function() { };
     this.enableCross = true;
+    this.openTime = function(lengthTime) { socket.emit('remote-opentime', lengthTime); };
+    this.closeTime = function() { socket.emit('remote-closetime'); };
 
     function selectItemLR(position) {
         var indexSelected = $('a.selected').index('a');

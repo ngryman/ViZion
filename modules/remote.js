@@ -41,6 +41,13 @@ Remote = function() {
             socket.on('trueremote-unmute', function() {
                 socket.broadcast.emit('remote-unmute');
             });
+            socket.on('remote-closetime', function() {
+                socket.broadcast.emit('trueremote-closetime');
+            });
+            socket.on('remote-opentime', function(time) {
+                console.log('opentime');
+                socket.broadcast.emit('trueremote-opentime', time);
+            });
         });
     };
     return this;

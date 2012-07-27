@@ -43,6 +43,11 @@ table td a img {
     border-bottom: solid 1px #353535;
 }
 
+.row {
+    width: 100%;
+    overflow: auto;
+}
+
 .row > div {
     float: left;
     min-height: 1px;
@@ -63,4 +68,12 @@ table td a img {
 a {
     text-decoration: none;
     color: #fff;
+}
+
+#time-panel {
+    border-top: solid 1px #353535;
+    position: absolute;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }

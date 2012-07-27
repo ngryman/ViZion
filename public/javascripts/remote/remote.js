@@ -2,6 +2,22 @@ $(document).ready(function() {
 
     var socketUri = 'http://' + location.hostname + ':' + '4242';
     var socket = io.connect(socketUri);
+    var $time = $('#time-panel');
+    $time.css('top', $('.row:first').outerHeight(true));
+
+    socket.on('trueremote-opentime', function(totalTime) {
+        $('#total-time').text(totalTime);
+        $time.show('clip');
+    });
+
+    socket.on('trueremote-settime', function(time) {
+        $('#time').text(time);
+        $time.show('clip');
+    });
+
+    socket.on('trueremote-closetime', function() {
+        $time.hide('clip');
+    });
 
     $('#fb').click(function() {
         socket.emit('trueremote-fastbackward');

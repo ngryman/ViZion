@@ -104,7 +104,6 @@ function Disk() {
                 var src = $a.children(':hidden').val();
                 document.vlc.setAttribute('target', 'file:///' + src);
                 remote.enableCross = false;
-                socket.emit('remote-change-remote', 'remote-player');
             }
             else {
                 $.loadingStart();
@@ -131,6 +130,7 @@ function Disk() {
     remote.onReturn = function() {
         if($.nmTop()) {
             $.nmTop().close();
+            remote.closeTime();
             remote.enableCross = true;
         }
         else {
@@ -178,6 +178,10 @@ function Disk() {
             $('#div-vlc').show().hide(); //tweak to load VLC active X
             $('#loadingVlc .bar').css('width', '100%');
             $('#loadingVlc').fadeOut();
+
+            document.vlc.addEventListener('MediaPlayerOpening', function() { alert('open'); remote.openTime(document.vlc.input.length); });
+            //document.vlc.attachEvent('MediaPlayerPositionChanged', function() { remote.setTime(document.vlc.input.length); })
+            document.vlc.addEventListener('MediaPlayerEndReached', function() { remote.closeTime(); });
         },
         listDrives: function() {
             socket.emit('disk-list-drives');
@@ -256,5 +260,4 @@ $(document).ready(function() {
     $.loadingStart();
     disk.init();
     disk.listDrives();
-    socket.emit('remote-change-remote', 'remote-nav');
 });
