@@ -84,7 +84,6 @@ Remote = function() {
         //find closest down item
         var $toSelect, closestTop = 99999, closestLeft = 99999;
         for(var i = 0; i < $selectable.length; i++) {
-            console.log(i);
             var $select = $($selectable[i]);
             var offset = $select.offset();
 

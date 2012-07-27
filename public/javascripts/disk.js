@@ -133,14 +133,17 @@ function Disk() {
             remote.closeTime();
             remote.enableCross = true;
         }
-        else {
+
+        var path = $('.breadcrumb input:last').val();
+        if(path) {
             $.loadingStart();
-            disk.$disk.fadeOut('normal', function() {
-                var p = $('p.path').text();
-                var sIndex = p.indexOf('\\');
-                p = p.substr(0, sIndex);
-                socket.emit('disk-list-folders', p);
+            $('#disk').fadeOut('normal', function() {
+                socket.emit('disk-list-folders', path);
             });
+        }
+        else {
+            var $a = $('.breadcrumb a:last');
+            window.location = $a.attr('href');
         }
     };
 
@@ -186,9 +189,27 @@ function Disk() {
             $('#loadingVlc .bar').css('width', '100%');
             $('#loadingVlc').fadeOut();
 
+            var registerVLCEvent = function(event, handler) {
+                if(vlc) {
+                    if(vlc.attachEvent)
+                        vlc.attachEvent(event, handler);
+                    else
+                        eval("vlc.on" + event + " = handler");
+                }
+            };
+
+            function regVLCEvent(tobj, type, func) {
+                if(tobj.attachEvent)
+                    tobj.attachEvent(type, func);
+                //  else if (tobj.addEventListener)
+                //      tobj.addEventListener(type, func, true);
+                else tobj["on" + type] = func;
+            }
+            regVLCEvent(document.vlc, 'MediaPlayerPositionChanged', function() { console.log(0); });
+            /*
             document.vlc.addEventListener('MediaPlayerOpening', function() { alert('open'); remote.openTime(document.vlc.input.length); });
             //document.vlc.attachEvent('MediaPlayerPositionChanged', function() { remote.setTime(document.vlc.input.length); })
-            document.vlc.addEventListener('MediaPlayerEndReached', function() { remote.closeTime(); });
+            document.vlc.addEventListener('MediaPlayerEndReached', function() { remote.closeTime(); });*/
         },
         listDrives: function() {
             socket.emit('disk-list-drives');
