@@ -31,13 +31,5 @@ exports.disk = function(req, res) {
 }
 
 exports.remote = function(req, res) {
-    res.render('remote', { layout: 'remote-layout' });
-}
-
-exports.remotenav = function(req, res) {
-    res.render('remote-nav', { layout: 'remote-layout' });
-}
-
-exports.remoteplayer = function(req, res) {
-    res.render('remote-player', { layout: 'remote-layout' });
+    res.render('remote', { layout: false });
 }

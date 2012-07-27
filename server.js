@@ -61,8 +61,6 @@ app.get('/', routes.index);
 app.get('/disk', routes.disk);
 
 app.get('/remote', routes.remote);
-app.get('/remote-nav', routes.remotenav);
-app.get('/remote-player', routes.remoteplayer);
 
 io.set("log level", 1);
 

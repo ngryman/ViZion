@@ -1,0 +1,66 @@
+body {
+    /* IE10 Consumer Preview */
+    background-image: -ms-radial-gradient(center, circle farthest-corner, #252A30 0%, #060606 100%);
+    /* Mozilla Firefox */
+    background-image: -moz-radial-gradient(center, circle farthest-corner, #252A30 0%, #060606 100%);
+    /* Opera */
+    background-image: -o-radial-gradient(center, circle farthest-corner, #252A30 0%, #060606 100%);
+    /* Webkit (Safari/Chrome 10) */
+    background-image: -webkit-gradient(radial, center center, 0, center center, 506, color-stop(0, #252A30), color-stop(1, #060606));
+    /* Webkit (Chrome 11+) */
+    background-image: -webkit-radial-gradient(center, circle farthest-corner, #252A30 0%, #060606 100%);
+    /* W3C Markup, IE10 Release Preview */
+    background-image: radial-gradient(circle farthest-corner at center, #252A30 0%, #060606 100%);
+    color: #fff;
+    font-size: 10em;
+    font-family: 'Droid Sans', sans-serif;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #33B5E5, 0 0 70px #33B5E5, 0 0 80px #33B5E5, 0 0 100px #33B5E5, 0 0 150px #33B5E5;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+}
+
+table td {
+    width: 33%;
+}
+
+table td a img {
+    vertical-align: middle;
+}
+
+.cross {
+    background-color: #131517;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.cross-up {
+    border-top: solid 1px #353535;
+}
+
+.cross-down {
+    border-bottom: solid 1px #353535;
+}
+
+.row > div {
+    float: left;
+    min-height: 1px;
+}
+
+.row > div > a > img {
+    width: 128px;
+}
+
+.cell3 {
+    width: 25%;
+}
+
+.cell6 {
+    width: 50%;
+}
+
+a {
+    text-decoration: none;
+    color: #fff;
+}

@@ -1,12 +1,6 @@
 function BreadCrumb() {
-
-    function join() {
-        
-    }
-
     return {
         parsePath: function(path) {
-
             if(path.trim() === '') return;
 
             var pathPart = path.split('\\');
@@ -22,26 +16,16 @@ function BreadCrumb() {
             this.removeAllItemAfter('Disk');
             for(var i = 0; i < pathPart.length; i++) {
                 var part = pathPart[i];
-                
+
                 if(i == pathPart.length - 1)
                     $bc.append('<li class="active" id="bc-root">' + part + '</li>');
                 else
-                    $bc.append('<li><a href="#">' + part + '<input type="hidden" value="' + pathPart.slice(0,i+1).join('\\') + '"/></a> <span class="divider">/</span></li>')
+                    $bc.append('<li><a href="#">' + part + '<input type="hidden" value="' + pathPart.slice(0, i + 1).join('\\') + '"/></a> <span class="divider">/</span></li>')
             }
+            $bc.find('a').click(function() {
+                disk.listFolder($(this).children('input').val());
+            });
         },
-        //addItem: function(name) {
-        //    if(name.trim() === '')
-        //        return;
-
-        //    var $bc = $('.breadcrumb');
-        //    var $lastLi = $bc.children('li:last');
-        //    if($lastLi[0].id === 'bc-root') {
-        //        $bc.append('<li id="bc-root"></li>');
-        //        $lastLi.remove();
-        //    }
-
-        //    $('.breadcrumb').append('<li class="active">' + name + '</li></li>');
-        //},
         removeItem: function(name) {
             $('.breadcrumb li:contains(' + name + ')').remove();
         },
@@ -54,16 +38,24 @@ $.breadcrumb = new BreadCrumb();
 
 function Disk() {
     //constructor
-    this.$disk = {};
-
     socket.on('disk-list', function(data) {
         var d = JSON.parse(data);
 
-        disk.$disk.children('div').remove();
+        var $disk = $('#disk');
+        $disk.children().remove();
 
         $.breadcrumb.parsePath(d.path);
 
-        for(var ii in d.items) {
+        var $row = undefined;
+        for(var ii = 0; ii < d.items.length; ii++) {
+
+            //create a row
+            if($row == undefined) {
+                $row = $('<div class="row"></div>');
+                $disk.append($row);
+            }
+
+            //create a span3 item
             var item = d.items[ii];
 
             var $div = $('<div>');
@@ -92,8 +84,11 @@ function Disk() {
             $a.append($p);
             $a.append($hidden);
             $div.append($a);
+            //create on item
+            $row.append($div);
 
-            disk.$disk.append($div);
+            if((ii + 1) % 4 == 0 && ii) //ii > 0
+                $row = undefined;
         }
 
         $('.button-item:first').addClass('selected');
@@ -105,15 +100,20 @@ function Disk() {
         });
 
         $('a.button-item').on('click', function() {
-            $.loadingStart();
-            disk.$selected = $(this);
-            disk.$disk.fadeOut('normal', function() {
+            if($(this).attr('rel') === 'nyro') {
+                var src = $a.children(':hidden').val();
+                document.vlc.setAttribute('target', 'file:///' + src);
+                socket.emit('remote-change-remote', 'remote-player');
+            }
+            else {
+                $.loadingStart();
+                disk.$selected = $(this);
                 disk.listFolder(disk.$selected.children('input').val());
-            });
+            }
             return false;
         });
 
-        disk.$disk.fadeIn();
+        $disk.fadeIn();
 
         $.loadingStop();
 
@@ -138,13 +138,18 @@ function Disk() {
 
     return {
         init: function() {
-            this.$disk = $('#disk');
+            $('#disk').before('<div class="span12" id="loadingVlc"><p>Loading VLC...<p/><div class="progress progress-danger progress-striped active"><div class="bar" style="width: 0%"></div></div></div>');
+            $('#div-vlc').show().hide(); //tweak to load VLC active X
+            $('#loadingVlc .bar').css('width', '100%');
+            $('#loadingVlc').fadeOut();
         },
         listDrives: function() {
             socket.emit('disk-list-drives');
         },
         listFolder: function(folder) {
-            socket.emit('disk-list-folders', folder);
+            $('#disk').fadeOut('normal', function() {
+                socket.emit('disk-list-folders', folder);
+            });
         }
     };
 
