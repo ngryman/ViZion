@@ -20,74 +20,74 @@ $(document).ready(function() {
         $time.hide('clip');
     });
 
-    $('#fb').click(function() {
+    $('#fb').tappable(function() {
         socket.emit('trueremote-fastbackward');
         return false;
     });
 
-    $('#play').click(function() {
+    $('#play').tappable(function() {
         socket.emit('trueremote-play');
         return false;
     });
 
-    $('#pause').click(function() {
+    $('#pause').tappable(function() {
         socket.emit('trueremote-pause');
         return false;
     });
 
-    $('#ff').click(function() {
+    $('#ff').tappable(function() {
         socket.emit('trueremote-fastforward');
         return false;
     });
 
-    $('#cross-up').click(function() {
+    $('#cross-up').tappable(function() {
         socket.emit('trueremote-cross-up');
         return false;
     });
 
-    $('#cross-left').click(function() {
+    $('#cross-left').tappable(function() {
         socket.emit('trueremote-cross-left');
         return false;
     });
 
-    $('#cross-down').click(function() {
+    $('#cross-down').tappable(function() {
         socket.emit('trueremote-cross-down');
         return false;
     });
 
-    $('#cross-right').click(function() {
+    $('#cross-right').tappable(function() {
         socket.emit('trueremote-cross-right');
         return false;
     });
 
-    $('#enter').click(function() {
+    $('#enter').tappable(function() {
         socket.emit('trueremote-enter');
         return false;
     });
 
-    $('#return').click(function() {
+    $('#return').tappable(function() {
         socket.emit('trueremote-return');
         return false;
     });
 
-    $('#kb').click(function() {
+    $('#kb').tappable(function() {
         $('#keyboard-panel').toggle('clip', function() { $('#keyboard:visible').focus(); });
         return false;
     });
 
-    $('#fs').click(function() {
+    $('#fs').tappable(function() {
         socket.emit('trueremote-fullscreen');
         return false;
     });
 
-    $('#mute').click(function() {
+    $('#mute').tappable(function() {
         $(this).hide();
         $('#unmute').show();
         socket.emit('trueremote-mute');
         return false;
     });
 
-    $('#unmute').click(function() {
+    $('#unmute').tappable(function() {
         $(this).hide();
         $('#mute').show();
         socket.emit('trueremote-unmute');

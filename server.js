@@ -9,6 +9,8 @@ var express = require('express')
   , remote = require('./modules/remote.js')
   , io = require('socket.io').listen(4242);
 
+const PORT = 3000;
+
 var app = module.exports = express.createServer();
 
 // Configuration
@@ -56,8 +58,8 @@ app.configure(function() {
 });
 
 // Routes
-
 app.get('/', routes.index);
+
 app.get('/disk', routes.disk);
 
 app.get('/remote', routes.remote);
@@ -67,5 +69,5 @@ io.set("log level", 1);
 remote.init(io);
 disk.init(io);
 
-app.listen(3000);
-console.log("info: ViZion server listening on port %d", app.address().port);
+app.listen(PORT);
+console.log("info: ViZion server listening on port %d", PORT);
