@@ -19,6 +19,8 @@ Remote = function() {
     this.onFullscreen = function() { };
     this.onMute = function() { };
     this.onUnMute = function() { };
+    this.onSearch = function() { };
+    this.onSearchItem = function(item) { };
     this.enableCross = true;
     this.openTime = function(lengthTime) { socket.emit('remote-opentime', lengthTime); };
     this.closeTime = function() { socket.emit('remote-closetime'); };
@@ -118,6 +120,7 @@ Remote = function() {
     });
 
     function scrollTo($item) {
+        $('html, body').stop(true, true);
         $('html, body').animate({
             scrollTop: $item.offset().top - $item.outerHeight(true)
         }, 2000);
@@ -190,6 +193,15 @@ Remote = function() {
     socket.on('remote-unmute', function() {
         remote.onUnMute();
     });
+
+    socket.on('remote-search', function() {
+        remote.onSearch();
+    });
+
+    socket.on('remote-searchitem', function(search) {
+        remote.onSearchItem(search);
+    });
+
 
     return this;
 }

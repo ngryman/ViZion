@@ -9,3 +9,4 @@ $(document).ready(function() {
         $('#loading').stop(true, true).hide();
     };
 });
+

@@ -41,6 +41,12 @@ Remote = function() {
             socket.on('trueremote-unmute', function() {
                 socket.broadcast.emit('remote-unmute');
             });
+            socket.on('trueremote-search', function() {
+                socket.broadcast.emit('remote-search');
+            });
+            socket.on('trueremote-searchitem', function(search) {
+                socket.broadcast.emit('remote-searchitem', search);
+            });
             socket.on('remote-closetime', function() {
                 socket.broadcast.emit('trueremote-closetime');
             });

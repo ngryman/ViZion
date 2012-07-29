@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Test page for FBVLC</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
+        <script type="text/javascript">
+            function addEvent(obj, name, func) {
+                if(window.addEventListener) {
+                    obj.addEventListener(name, func, false);
+                } else {
+                    obj.attachEvent("on" + name, func);
+                }
+            }
+
+            $(document).ready(function() {
+                load_w();
+            });
+        </script>
+        <script type="text/javascript">
+            //for windowed mode
+            function getStateString_w() {
+                var ret = "";
+                var st = document.vlc.state;
+                if(document.vlc.libvlc_Opening == st) {
+                    ret = "Opening";
+                } else if(document.vlc.libvlc_Buffering == st) {
+                    ret = "Buffering";
+                } else if(document.vlc.libvlc_Playing == st) {
+                    ret = "Playing";
+                } else if(document.vlc.libvlc_Paused == st) {
+                    ret = "Paused";
+                } else if(document.vlc.libvlc_Stopped == st) {
+                    ret = "Stopped";
+                } else if(document.vlc.libvlc_Ended == st) {
+                    ret = "Ended";
+                } else if(document.vlc.libvlc_Error == st) {
+                    ret = "Error";
+                }
+                return ret;
+            }
+            function updateState_w() {
+				document.getElementById('state_w').innerHTML = getStateString_w();
+            }
+            function load_w() {
+                addEvent(document.vlc, 'Play', updateState_w);
+                addEvent(document.vlc, 'Pause', updateState_w);
+                addEvent(document.vlc, 'Stop', updateState_w);
+                addEvent(document.vlc, 'MediaPlayerNothingSpecial', updateState_w);
+                addEvent(document.vlc, 'MediaPlayerOpening', updateState_w);
+                addEvent(document.vlc, 'MediaPlayerBuffering', updateState_w);
+                addEvent(document.vlc, 'MediaPlayerPlaying', updateState_w);
+                addEvent(document.vlc, 'MediaPlayerPaused', updateState_w);
+                addEvent(document.vlc, 'MediaPlayerStopped', updateState_w);
+                addEvent(document.vlc, 'MediaPlayerEnded', updateState_w);
+                addEvent(document.vlc, 'MediaPlayerError', updateState_w);
+                updateState_w();
+            }
+        </script>
+    </head>
+    <body onload="">
+        <h1>Windowed mode.</h1>
+        <object id="vlc" height="240" type="application/x-fb-vlc" width="320">
+            <param name="autoplay" value="true" />
+            <param name="bgcolor" value="#999999" />
+            <param name="src" value="http://cam.admin.tomsk.ru/cgi-bin/cam4.pl" />
+        </object>
+        <br />
+        <span id="state_w"></span>
+        <br />
+RL:
+        <input id="MRL_w" size="90" value="file:///">
+        <a href="#" onclick="document.vlc.play(getByID('MRL_w').value)">play</a>
+        <br />
+        <a href="#" onclick="document.vlc.togglePause()">togglePause</a>
+        <br />
+        <a href="#" onclick="document.vlc.stop()">stop</a>
+        <br />
+        <a href="#" onclick="document.vlc.toggleMute()">toggleMute</a>
+        <br />
+    </body>
+</html>

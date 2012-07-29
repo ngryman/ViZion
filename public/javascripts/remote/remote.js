@@ -70,8 +70,16 @@ $(document).ready(function() {
         return false;
     });
 
-    $('#kb').tappable(function() {
-        $('#keyboard-panel').toggle('clip', function() { $('#keyboard:visible').focus(); });
+    $('#search').tappable(function() {
+        $('#search-panel').toggle('clip');
+        socket.emit('trueremote-search');
+
+        var $input = $('#searchInput:visible');
+        //$input.focus(); //TODO: Fix that, focus on input after open
+        $input.val('');
+        $input.keyup(function(){
+            socket.emit('trueremote-searchitem',$input.val());
+        });
         return false;
     });
 

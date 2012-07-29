@@ -36,6 +36,99 @@ function BreadCrumb() {
 };
 $.breadcrumb = new BreadCrumb();
 
+function addEvent(obj, name, func) {
+    if(window.addEventListener) {
+        obj.addEventListener(name, func, false);
+    } else {
+        obj.attachEvent("on" + name, func);
+    }
+}
+
+function VLC() {
+    //constructor
+    this.vlc = document.vlc;
+    this.onLoadError = function() { };
+    this.onLoadSuccess = function() { };
+
+    return {
+        _loaderVlc: function(percent) {
+            if(this._$loaderVlc == undefined) {
+                this._$loaderVlc = $('#loadingVlc');
+                this._loaderVlcValue = this._$loaderVlc.find('.bar');
+            }
+
+            this._loaderVlcValue.css('width', percent + '%');
+
+            if(percent >= 100) {
+                this._$loaderVlc.fadeOut();
+            }
+        },
+        _dispatchVlcEvent: function() {
+            var vlcState = document.vlc.state;
+            var ret = '';
+
+            if(document.vlc.libvlc_Opening == vlcState) {
+                ret = "Opening";
+            } else if(document.vlc.libvlc_Buffering == vlcState) {
+                ret = "Buffering";
+            } else if(document.vlc.libvlc_Playing == vlcState) {
+                ret = "Playing";
+            } else if(document.vlc.libvlc_Paused == vlcState) {
+                ret = "Paused";
+            } else if(document.vlc.libvlc_Stopped == vlcState) {
+                ret = "Stopped";
+            } else if(document.vlc.libvlc_Ended == vlcState) {
+                ret = "Ended";
+            } else if(document.vlc.libvlc_Error == vlcState) {
+                ret = "Error";
+            }
+        },
+        init: function() {
+            $('#disk').before('<div class="span12" id="loadingVlc"><p>Loading VLC...<p/><div class="progress progress-danger progress-striped active"><div class="bar" style="width: 0%"></div></div></div>');
+
+            this._loaderVlc(10);
+
+            $('#div-vlc').show();
+            if(document.vlc.version == undefined) {
+                this.onLoadError();
+                $('#div-vlc').hide();
+                this._loaderVlc(100);
+            }
+            else {
+                $('#div-vlc').hide();
+                $.loadingStart();
+
+                addEvent(document.vlc, 'Play', this._dispatchVlcEvent);
+                addEvent(document.vlc, 'Pause', this._dispatchVlcEvent);
+                addEvent(document.vlc, 'Stop', this.dispatchVlcEvent);
+                addEvent(document.vlc, 'MediaPlayerNothingSpecial', this._dispatchVlcEvent);
+                addEvent(document.vlc, 'MediaPlayerOpening', this._dispatchVlcEvent);
+                addEvent(document.vlc, 'MediaPlayerBuffering', this._dispatchVlcEvent);
+                addEvent(document.vlc, 'MediaPlayerPlaying', this._dispatchVlcEvent);
+                addEvent(document.vlc, 'MediaPlayerPaused', this._dispatchVlcEvent);
+                addEvent(document.vlc, 'MediaPlayerStopped', this._dispatchVlcEvent);
+                addEvent(document.vlc, 'MediaPlayerEnded', this._dispatchVlcEvent);
+                addEvent(document.vlc, 'MediaPlayerError', this._dispatchVlcEvent);
+
+                this.onLoadSuccess();
+
+                $('#div-novlc').remove();
+                $('#loadingVlc').remove();
+
+                this._loaderVlc(100);
+            }
+        },
+        pause: function() { if(document.vlc) document.vlc.playlist.togglePause(); },
+        play: function() { if(document.vlc) document.vlc.playlist.play(); },
+        mute: function() { if(document.vlc) document.vlc.audio.mute = true; },
+        unMute: function() { if(document.vlc) document.vlc.audio.mute = false; },
+        fastBackward: function() { if(document.vlc) document.vlc.input.time -= 10000; },
+        fastForward: function() { if(document.vlc) document.vlc.input.time += 10000; },
+        toggleFullscreen: function() { if(document.vlc) document.vlc.video.toggleFullscreen(); }
+    }
+}
+var vlc = new VLC();
+
 function Disk() {
     //constructor
     socket.on('disk-list', function(data) {
@@ -148,69 +241,50 @@ function Disk() {
     };
 
     remote.onPause = function() {
-        if(document.vlc)
-            document.vlc.playlist.togglePause();
+        vlc.pause();
     };
 
     remote.onPlay = function() {
-        if(document.vlc)
-            document.vlc.playlist.play();
+        vlc.play();
     };
 
     remote.onMute = function() {
-        if(document.vlc)
-            document.vlc.audio.mute = true;
+        vlc.mute();
     };
 
     remote.onUnMute = function() {
-        if(document.vlc)
-            document.vlc.audio.mute = false;
+        vlc.unMute();
     };
 
     remote.onFastBackward = function() {
-        if(document.vlc)
-            document.vlc.input.time -= 10000
+        vlc.fastBackward();
     };
 
     remote.onFastForward = function() {
-        if(document.vlc)
-            document.vlc.input.time += 10000
+        vlc.fastForward();
     };
 
     remote.onFullscreen = function() {
-        if(document.vlc)
-            document.vlc.video.toggleFullscreen();
+        vlc.toggleFullscreen();
+    };
+
+    remote.onSearch = function() {
+        $('#search').toggle('blind');
+    };
+
+    remote.onSearchItem = function(item) {
+        $('#searchInput').val(item);
+        $('.button-item').removeClass('selected');
+        if(item.trim() === '') {
+            $('.button-item').show().first().addClass('selected');
+        }
+        else {
+            $('.button-item').not(':contains(' + item + ')').hide();
+            $('.button-item:contains(' + item + ')').show().first().addClass('selected');
+        }
     };
 
     return {
-        init: function() {
-            $('#disk').before('<div class="span12" id="loadingVlc"><p>Loading VLC...<p/><div class="progress progress-danger progress-striped active"><div class="bar" style="width: 0%"></div></div></div>');
-            $('#div-vlc').show().hide(); //tweak to load VLC active X
-            $('#loadingVlc .bar').css('width', '100%');
-            $('#loadingVlc').fadeOut();
-
-            var registerVLCEvent = function(event, handler) {
-                if(vlc) {
-                    if(vlc.attachEvent)
-                        vlc.attachEvent(event, handler);
-                    else
-                        eval("vlc.on" + event + " = handler");
-                }
-            };
-
-            function regVLCEvent(tobj, type, func) {
-                if(tobj.attachEvent)
-                    tobj.attachEvent(type, func);
-                //  else if (tobj.addEventListener)
-                //      tobj.addEventListener(type, func, true);
-                else tobj["on" + type] = func;
-            }
-            regVLCEvent(document.vlc, 'MediaPlayerPositionChanged', function() { console.log(0); });
-            /*
-            document.vlc.addEventListener('MediaPlayerOpening', function() { alert('open'); remote.openTime(document.vlc.input.length); });
-            //document.vlc.attachEvent('MediaPlayerPositionChanged', function() { remote.setTime(document.vlc.input.length); })
-            document.vlc.addEventListener('MediaPlayerEndReached', function() { remote.closeTime(); });*/
-        },
         listDrives: function() {
             socket.emit('disk-list-drives');
         },
@@ -220,72 +294,11 @@ function Disk() {
             });
         }
     };
-
-    //socket.on('remote-cross-enter', function() {
-    //    var $liSelected = $('li.selected');
-    //    var $a = $liSelected.children('a[rel^=nyro]');
-    //    if($a.length) {
-    //        var src = $a.children(':hidden').val();
-    //        document.vlc.setAttribute('target', 'file:///' + src);
-    //        socket.emit('remote-change-remote', 'remote-player');
-    //        $a.click();
-    //    }
-    //    else {
-    //        $.loadingStart();
-    //        $("#content").fadeOut('normal', function() {
-    //            socket.emit('disk-list-folders', $('li.selected input').val());
-    //        });
-    //    }
-    //});
-
-    //remote.onEnter = function() {
-    //    if($.nmTop()) {
-    //        $.nmTop().close();
-    //    }
-    //    else {
-    //        $.loadingStart();
-    //        $("#content").fadeOut('normal', function() {
-    //            var p = $('p.path').text();
-    //            var sIndex = p.indexOf('\\');
-    //            p = p.substr(0, sIndex);
-    //            socket.emit('disk-list-folders', p);
-    //        });
-    //    }
-    //};
-
-    //remote.onRefresh = function() {
-    //    $.loadingStart();
-    //    $("#content").fadeOut('normal', function() {
-    //        socket.emit('disk-list-folders', { path: $('p.path').text() });
-    //    });
-    //}
-
-    //function scrollTo($item) {
-    //    $('html, body').animate({
-    //        scrollTop: $item.offset().top - $item.outerHeight(true) / 2
-    //    }, 2000);
-    //}
-
-    //function findLiAt(position) {
-    //    var $liSelected = $('.table li.selected');
-    //    var liH = $liSelected.outerHeight(true);
-    //    var posSelected = $liSelected.offset();
-
-    //    var top;
-
-    //    if(position === 'up')
-    //        top = posSelected.top - document.body.scrollTop - (liH / 3);
-    //    else
-    //        top = posSelected.top + liH - document.body.scrollTop;
-
-    //    return $(document.elementFromPoint(posSelected.left, top)).parent('li');
-    //}
 }
-
 var disk = new Disk();
 
 $(document).ready(function() {
-    $.loadingStart();
-    disk.init();
-    disk.listDrives();
+    vlc.onLoadError = function() { $('#div-novlc').show(); };
+    vlc.onLoadSuccess = function() { disk.listDrives(); };
+    vlc.init();
 });
