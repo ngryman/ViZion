@@ -120,6 +120,7 @@ function VLC() {
         },
         pause: function() { if(document.vlc) document.vlc.playlist.togglePause(); },
         play: function() { if(document.vlc) document.vlc.playlist.play(); },
+        stop: function() { if(document.vlc) document.vlc.playlist.stop(); },
         mute: function() { if(document.vlc) document.vlc.audio.mute = true; },
         unMute: function() { if(document.vlc) document.vlc.audio.mute = false; },
         fastBackward: function() { if(document.vlc) document.vlc.input.time -= 10000; },
@@ -142,13 +143,6 @@ function Disk() {
         $.breadcrumb.parsePath(d.path);
 
         for(var ii = 0; ii < d.items.length; ii++) {
-
-            //create a row
-            //if($row == undefined) {
-            //    $row = $('<div class="row"></div>');
-            //    $disk.append($row);
-            //}
-
             //create a span3 item
             var item = d.items[ii];
 
@@ -168,7 +162,7 @@ function Disk() {
                 $img = $("<img src='/images/disk/music.png'>");
             else if(item.type === 'video') {
                 $a.attr('href', '#div-vlc');
-                $a.attr('rel', 'nyro');
+                $a.attr('rel', 'video');
                 $img = $("<img src='/images/disk/video.png'>");
             }
             else if(item.type === 'folder')
@@ -178,25 +172,17 @@ function Disk() {
             $a.append($p);
             $a.append($hidden);
             $div.append($a);
-            //create on item
-            $row.append($div);
 
-            //if((ii + 1) % 4 == 0 && ii) //ii > 0
-            //    $row = undefined;
+            $row.append($div);
         }
 
         $('.button-item:first').addClass('selected');
 
-        $('a[rel^=nyro]').nyroModal({
-            modal: true,
-            showCloseButton: false,
-            galleryCounts: false
-        });
-
         $('a.button-item').on('click', function() {
-            if($(this).attr('rel') === 'nyro') {
+            if($(this).attr('rel') === 'video') {
                 var src = $a.children(':hidden').val();
                 document.vlc.setAttribute('target', 'file:///' + src);
+                $.fancybox({ href: '#div-vlc', title: src, autosize: true });
                 remote.enableCross = false;
             }
             else {
@@ -217,27 +203,28 @@ function Disk() {
     });
 
     remote.onEnter = function($selected) {
-        if(!$.nmTop())
+        if(!$.fancybox.isOpen)
             $selected.click();
     };
 
     remote.onReturn = function() {
-        if($.nmTop()) {
-            $.nmTop().close();
+        if($.fancybox.isOpen) {
+            vlc.stop();
+            $.fancybox.close();
             remote.closeTime();
             remote.enableCross = true;
-        }
-
-        var path = $('.breadcrumb input:last').val();
-        if(path) {
-            $.loadingStart();
-            $('#disk').fadeOut('normal', function() {
-                socket.emit('disk-list-folders', path);
-            });
-        }
-        else {
-            var $a = $('.breadcrumb a:last');
-            window.location = $a.attr('href');
+        } else {
+            var path = $('.breadcrumb input:last').val();
+            if(path) {
+                $.loadingStart();
+                $('#disk').fadeOut('normal', function() {
+                    socket.emit('disk-list-folders', path);
+                });
+            }
+            else {
+                var $a = $('.breadcrumb a:last');
+                window.location = $a.attr('href');
+            }
         }
     };
 
