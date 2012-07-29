@@ -135,18 +135,19 @@ function Disk() {
         var d = JSON.parse(data);
 
         var $disk = $('#disk');
-        $disk.children().remove();
+        var $row = $disk.children('.row');
+
+        $row.children().remove();
 
         $.breadcrumb.parsePath(d.path);
 
-        var $row = undefined;
         for(var ii = 0; ii < d.items.length; ii++) {
 
             //create a row
-            if($row == undefined) {
-                $row = $('<div class="row"></div>');
-                $disk.append($row);
-            }
+            //if($row == undefined) {
+            //    $row = $('<div class="row"></div>');
+            //    $disk.append($row);
+            //}
 
             //create a span3 item
             var item = d.items[ii];
@@ -180,8 +181,8 @@ function Disk() {
             //create on item
             $row.append($div);
 
-            if((ii + 1) % 4 == 0 && ii) //ii > 0
-                $row = undefined;
+            //if((ii + 1) % 4 == 0 && ii) //ii > 0
+            //    $row = undefined;
         }
 
         $('.button-item:first').addClass('selected');
