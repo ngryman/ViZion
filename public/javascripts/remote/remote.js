@@ -2,9 +2,6 @@ $(document).ready(function() {
 
     var socketUri = 'http://' + location.hostname + ':' + '4242';
     var socket = io.connect(socketUri);
-    var $panels = $('.panel');
-    $panels.css('top', $('table').offset().top /*$('.row:first').outerHeight(true)*/);
-    $panels.height($('table').outerHeight(true));
 
     socket.on('trueremote-opentime', function(totalTime) {
         $('#total-time').text(totalTime);
@@ -40,27 +37,27 @@ $(document).ready(function() {
         return false;
     });
 
-    $('#cross-up').tappable(function() {
+    $('#up').tappable(function() {
         socket.emit('trueremote-cross-up');
         return false;
     });
 
-    $('#cross-left').tappable(function() {
+    $('#left').tappable(function() {
         socket.emit('trueremote-cross-left');
         return false;
     });
 
-    $('#cross-down').tappable(function() {
+    $('#down').tappable(function() {
         socket.emit('trueremote-cross-down');
         return false;
     });
 
-    $('#cross-right').tappable(function() {
+    $('#right').tappable(function() {
         socket.emit('trueremote-cross-right');
         return false;
     });
 
-    $('#enter').tappable(function() {
+    $('#ok').tappable(function() {
         socket.emit('trueremote-enter');
         return false;
     });
@@ -81,17 +78,14 @@ $(document).ready(function() {
     });
 
     $('#mute').tappable(function() {
-        $(this).hide();
-        $('#unmute').show();
-        socket.emit('trueremote-mute');
+        var $this = $(this);
+        $this.toggleClass('on').toggleClass('off');
+        console.log($this.hasClass('on'), $this.hasClass('off'));
+        socket.emit($this.hasClass('on') ? 'trueremote-mute' : 'trueremote-unmute');
         return false;
     });
+});
 
-    $('#unmute').tappable(function() {
-        $(this).hide();
-        $('#mute').show();
-        socket.emit('trueremote-unmute');
-        return false;
-    });
-
+$(window).load(function() {
+    setTimeout(scrollTo, 100, 0, 1);
 });
