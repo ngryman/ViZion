@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta content="width=device-width; initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no;" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <title>ViZion Remote</title>
         <link href="/stylesheets/remote/remote.css" rel="stylesheet" type="text/css">
         <script src="/javascripts/libs/jquery.min.js"></script>
@@ -10,38 +10,27 @@
         <script src="/javascripts/libs/socket.io/socket.io.min.js"></script>
         <script src="/javascripts/remote/remote.js"></script>
     </head>
-    <body>
-        <div class="row">
-            <div class="cell3"><a href="#" id="fb"><img alt="fb" src="/images/remote/fb.png"></a></div>
-            <div class="cell3"><a href="#" id="play"><img alt="play" src="/images/remote/play.png"></a></div>
-            <div class="cell3"><a href="#" id="pause"><img alt="pause" src="/images/remote/pause.png"></a></div>
-            <div class="cell3"><a href="#" id="ff"><img alt="ff" src="/images/remote/ff.png"></a></div>
+    <body ontouchmove="event.preventDefault();">
+        <div class="bar">
+            <div class="touch"><button id="fb">Fast backward</button></div>
+            <div class="touch"><button id="play">Play</button></div>
+            <div class="touch"><button id="pause">Pause</button></div>
+            <div class="touch"><button id="ff">Fast Forward</button></div>
         </div>
-        <table>
-            <tr>
-                <td></td>
-                <td class="cross cross-up"><a href="#" id="cross-up"><img alt="up" src="/images/remote/up.png"></a></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td class="cross cross-up"><a href="#" id="cross-left"><img alt="left" src="/images/remote/left.png"></a></td>
-                <td class="cross"><a href="#" id="enter">OK</a></td>
-                <td class="cross cross-up"><a href="#" id="cross-right"><img alt="right" src="/images/remote/right.png"></a></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td class="cross"><a href="#" id="cross-down"><img alt="down" src="/images/remote/down.png"></a></td>
-                <td></td>
-            </tr>
-        </table>
-        <div class="row">
-            <div class="cell3"><a href="#" id="return"><img alt="return" src="/images/remote/return.png"></a></div>
-            <div class="cell3"><a href="#" id="search"><img alt="kb" src="/images/remote/search.png"></a></div>
-            <div class="cell3"><a href="#" id="fs"><img alt="kb" src="/images/remote/fs.png"></a></div>
-            <div class="cell3">
-                <a href="#" id="mute"><img alt="mute" src="/images/remote/mute.png"></a>
-                <a href="#" id="unmute" style="display: none;"><img alt="mute" src="/images/remote/unmute.png"></a>
+        <div class="cross">
+            <div class="top touch"><button id="up">Up</button></div>
+            <div class="middle">
+                <div class="touch"><button id="left">Left</button></div>
+                <div class="touch"><button id="ok">OK</button></div>
+                <div class="touch"><button id="right">Right</button></div>
             </div>
+            <div class="bottom touch"><button id="down">Down</button></div>
+        </div>
+        <div class="bar">
+            <div class="touch"><button id="return"></button></div>
+            <div class="touch"><button id="kb"></button></div>
+            <div class="touch"><button id="fs"></button></div>
+            <div class="touch"><button id="mute" class="off"></button></div>
         </div>
         <div id="time-panel" class="panel" style="display: none;">
             <p><span id="time">00:00:00</span><br>/<br/><span id="total-time">00:00:00</span></p>

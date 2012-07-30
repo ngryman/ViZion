@@ -1,3 +1,11 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     /* IE10 Consumer Preview */
     background-image: -ms-radial-gradient(center, circle farthest-corner, #252A30 0%, #060606 100%);
@@ -18,57 +26,82 @@ body {
     text-align: center;
 }
 
-/*tweak to enable GPU*/
-/** {
-    -webkit-transform: translatez(0);
-    -moz-transform: translatez(0);
-    -ms-transform: translatez(0);
-    -o-transform: translatez(0);
-    transform: translatez(0);
-}*/
+button {
+    padding: 0;
+    border: 0;
+    background: transparent no-repeat center center;
+    text-indent: -9999px;
+}
 
-table {
+.bar {
     width: 100%;
+    font-size: 0;
 }
 
-table td {
-    width: 33%;
+.bar .touch {
+    display: inline-block;
+    width: 25%;
 }
 
-table td a img {
-    vertical-align: middle;
+.bar button {
+    width: 60px;
+    height: 60px;
+    background-size: 40px 40px;
 }
 
 .cross {
+    font-size: 0;
+}
+
+.cross > div {
+    width: 100%;
+    font-size: 0;
+}
+
+.cross .touch {
+    display: inline-block;
+    margin: 2px;
+    width: 30%;
+    vertical-align: top;
     background-color: #131517;
+    border-top: solid 1px #353535;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
-.cross-up {
-    border-top: solid 1px #353535;
+.cross .middle .touch:nth-child(2) {
+    border-top: solid 1px transparent;
 }
 
-.cross-down {
-    border-bottom: solid 1px #353535;
+.cross button {
+    width: 80px;
+    height: 80px;
+    background-size: 60px 60px;
 }
 
-.row {
-    width: 100%;
-    overflow: auto;
-}
+#fb       { background-image: url(/images/remote/fb.png); }
+#play     { background-image: url(/images/remote/play.png); }
+#pause    { background-image: url(/images/remote/pause.png); }
+#ff       { background-image: url(/images/remote/ff.png); }
 
-.row > div {
-    float: left;
-    min-height: 1px;
+#up       { background-image: url(/images/remote/up.png); }
+#left     { background-image: url(/images/remote/left.png); }
+#ok       {
+    text-indent: 0;
+    color: white;
+    font-size: 30px;
+    line-height: 30px;
+    text-align: center;
 }
+#right    { background-image: url(/images/remote/right.png); }
+#down     { background-image: url(/images/remote/down.png); }
 
-.row > div > a > img {
-    width: 128px;
-}
 
-.cell3 {
-    width: 25%;
-}
+#return   { background-image: url(/images/remote/return.png); }
+#kb       { background-image: url(/images/remote/kb.png); }
+#fs       { background-image: url(/images/remote/fs.png); }
+#mute.off { background-image: url(/images/remote/mute.png); }
+#mute.on  { background-image: url(/images/remote/unmute.png); }
+
 
 .cell6 {
     width: 50%;
