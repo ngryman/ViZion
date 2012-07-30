@@ -109,6 +109,8 @@ function VLC() {
                 addEvent(document.vlc, 'MediaPlayerStopped', this._dispatchVlcEvent);
                 addEvent(document.vlc, 'MediaPlayerEnded', this._dispatchVlcEvent);
                 addEvent(document.vlc, 'MediaPlayerError', this._dispatchVlcEvent);
+                /*addEvent(document.vlc, 'MediaPlayerPositionChanged', alert(0));
+                addEvent(document.vlc, 'MediaPlayerTimeChanged', alert(1));*/
 
                 this.onLoadSuccess();
 
@@ -133,6 +135,10 @@ var vlc = new VLC();
 function Disk() {
     //constructor
     socket.on('disk-list', function(data) {
+        
+        $('#searchInput').val('');
+        $('#search:visible').hide('blind');
+
         var d = JSON.parse(data);
 
         var $disk = $('#disk');
@@ -214,16 +220,21 @@ function Disk() {
             remote.closeTime();
             remote.enableCross = true;
         } else {
-            var path = $('.breadcrumb input:last').val();
-            if(path) {
-                $.loadingStart();
-                $('#disk').fadeOut('normal', function() {
-                    socket.emit('disk-list-folders', path);
-                });
+            if($('#searchInput').val().trim() !== '') {
+                remote.onSearchItem('');
             }
             else {
-                var $a = $('.breadcrumb a:last');
-                window.location = $a.attr('href');
+                var path = $('.breadcrumb input:last').val();
+                if(path) {
+                    $.loadingStart();
+                    $('#disk').fadeOut('normal', function() {
+                        socket.emit('disk-list-folders', path);
+                    });
+                }
+                else {
+                    var $a = $('.breadcrumb a:last');
+                    window.location = $a.attr('href');
+                }
             }
         }
     };
@@ -267,8 +278,8 @@ function Disk() {
             $('.button-item').show().first().addClass('selected');
         }
         else {
-            $('.button-item').not(':contains(' + item + ')').hide();
-            $('.button-item:contains(' + item + ')').show().first().addClass('selected');
+            $('.button-item').not(':containsI(' + item + ')').hide();
+            $('.button-item:containsI(' + item + ')').show().first().addClass('selected');
         }
     };
 
@@ -286,6 +297,12 @@ function Disk() {
 var disk = new Disk();
 
 $(document).ready(function() {
+
+    //jquery :contains insensitive
+    jQuery.expr[':'].containsI = function(a, i, m) {
+        return jQuery(a).text().toLowerCase().indexOf(m[3].toLowerCase()) >= 0;
+    };
+
     vlc.onLoadError = function() { $('#div-novlc').show(); };
     vlc.onLoadSuccess = function() { disk.listDrives(); };
     vlc.init();

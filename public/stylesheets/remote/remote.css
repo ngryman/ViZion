@@ -19,12 +19,18 @@ body {
     background-image: -webkit-radial-gradient(center, circle farthest-corner, #252A30 0%, #060606 100%);
     /* W3C Markup, IE10 Release Preview */
     background-image: radial-gradient(circle farthest-corner at center, #252A30 0%, #060606 100%);
-    color: #fff;
-    font-size: 10em;
-    font-family: 'Droid Sans', sans-serif;
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #33B5E5, 0 0 70px #33B5E5, 0 0 80px #33B5E5, 0 0 100px #33B5E5, 0 0 150px #33B5E5;
     text-align: center;
 }
+
+/*tweak to enable GPU*/
+/*{
+    -webkit-transform: translatez(0);
+    -moz-transform: translatez(0);
+    -ms-transform: translatez(0);
+    -o-transform: translatez(0);
+    transform: translatez(0);
+}*/
+
 
 button {
     padding: 0;
@@ -78,29 +84,68 @@ button {
     background-size: 60px 60px;
 }
 
-#fb       { background-image: url(/images/remote/fb.png); }
-#play     { background-image: url(/images/remote/play.png); }
-#pause    { background-image: url(/images/remote/pause.png); }
-#ff       { background-image: url(/images/remote/ff.png); }
+#fb {
+    background-image: url(/images/remote/fb.png);
+}
 
-#up       { background-image: url(/images/remote/up.png); }
-#left     { background-image: url(/images/remote/left.png); }
-#ok       {
+#play {
+    background-image: url(/images/remote/play.png);
+}
+
+#pause {
+    background-image: url(/images/remote/pause.png);
+}
+
+#ff {
+    background-image: url(/images/remote/ff.png);
+}
+
+#up {
+    background-image: url(/images/remote/up.png);
+}
+
+#left {
+    background-image: url(/images/remote/left.png);
+}
+
+#ok {
     text-indent: 0;
-    color: white;
     font-size: 30px;
     line-height: 30px;
     text-align: center;
+    color: #fff;
+    font-family: 'Droid Sans', sans-serif;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #33B5E5, 0 0 70px #33B5E5, 0 0 80px #33B5E5, 0 0 100px #33B5E5, 0 0 150px #33B5E5;
 }
-#right    { background-image: url(/images/remote/right.png); }
-#down     { background-image: url(/images/remote/down.png); }
+
+#right {
+    background-image: url(/images/remote/right.png);
+}
+
+#down {
+    background-image: url(/images/remote/down.png);
+}
 
 
-#return   { background-image: url(/images/remote/return.png); }
-#kb       { background-image: url(/images/remote/kb.png); }
-#fs       { background-image: url(/images/remote/fs.png); }
-#mute.off { background-image: url(/images/remote/mute.png); }
-#mute.on  { background-image: url(/images/remote/unmute.png); }
+#return {
+    background-image: url(/images/remote/return.png);
+}
+
+#search {
+    background-image: url(/images/remote/search.png);
+}
+
+#fs {
+    background-image: url(/images/remote/fs.png);
+}
+
+#mute.off {
+    background-image: url(/images/remote/mute.png);
+}
+
+#mute.on {
+    background-image: url(/images/remote/unmute.png);
+}
 
 
 .cell6 {
@@ -118,9 +163,14 @@ a {
     width: 100%;
     background: rgba(0, 0, 0, 0.9);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-family: 'Droid Sans', sans-serif;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #33B5E5, 0 0 70px #33B5E5, 0 0 80px #33B5E5, 0 0 100px #33B5E5, 0 0 150px #33B5E5;
+    font-size: 30px;
+    line-height: 30px;
 }
 
 .panel input {
-    width: 100%;
+    width: 75%;
     font-size: 1em;
 }

@@ -3,6 +3,10 @@ $(document).ready(function() {
     var socketUri = 'http://' + location.hostname + ':' + '4242';
     var socket = io.connect(socketUri);
 
+    var $panels = $('.panel');
+    $panels.css('top', $('.cross').offset().top);
+    $panels.height($('.cross').outerHeight(true));
+
     socket.on('trueremote-opentime', function(totalTime) {
         $('#total-time').text(totalTime);
         $time.show('clip');
@@ -92,7 +96,7 @@ $(document).ready(function() {
         socket.emit($this.hasClass('on') ? 'trueremote-mute' : 'trueremote-unmute');
         return false;
     });
-    });
+});
 
 $(window).load(function() {
     setTimeout(scrollTo, 100, 0, 1);
