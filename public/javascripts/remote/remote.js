@@ -3,7 +3,7 @@ $(document).ready(function() {
     var socketUri = 'http://' + location.hostname + ':' + '4242';
     var socket = io.connect(socketUri);
     var $panels = $('.panel');
-    $panels.css('top', $('table').offset().top /*$('.row:first').outerHeight(true)*/);
+    $panels.css('top', $('table').offset().top);
     $panels.height($('table').outerHeight(true));
 
     socket.on('trueremote-opentime', function(totalTime) {
@@ -77,8 +77,8 @@ $(document).ready(function() {
         var $input = $('#searchInput:visible');
         //$input.focus(); //TODO: Fix that, focus on input after open
         $input.val('');
-        $input.keyup(function(){
-            socket.emit('trueremote-searchitem',$input.val());
+        $input.keyup(function() {
+            socket.emit('trueremote-searchitem', $input.val());
         });
         return false;
     });

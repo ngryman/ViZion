@@ -118,14 +118,14 @@ function VLC() {
                 this._loaderVlc(100);
             }
         },
-        pause: function() { if(document.vlc) document.vlc.playlist.togglePause(); },
-        play: function() { if(document.vlc) document.vlc.playlist.play(); },
-        stop: function() { if(document.vlc) document.vlc.playlist.stop(); },
-        mute: function() { if(document.vlc) document.vlc.audio.mute = true; },
-        unMute: function() { if(document.vlc) document.vlc.audio.mute = false; },
-        fastBackward: function() { if(document.vlc) document.vlc.input.time -= 10000; },
-        fastForward: function() { if(document.vlc) document.vlc.input.time += 10000; },
-        toggleFullscreen: function() { if(document.vlc) document.vlc.video.toggleFullscreen(); }
+        pause: function() { if(document.vlc.playlist) document.vlc.playlist.togglePause(); },
+        play: function() { if(document.vlc.playlist) document.vlc.playlist.play(); },
+        stop: function() { if(document.vlc.playlist) document.vlc.playlist.stop(); },
+        mute: function() { if(document.vlc.audio) document.vlc.audio.mute = true; },
+        unMute: function() { if(document.vlc.audio) document.vlc.audio.mute = false; },
+        fastBackward: function() { if(document.vlc.input) document.vlc.input.time -= 10000; },
+        fastForward: function() { if(document.vlc.input) document.vlc.input.time += 10000; },
+        toggleFullscreen: function() { if(document.vlc.video) document.vlc.video.toggleFullscreen(); }
     }
 }
 var vlc = new VLC();
