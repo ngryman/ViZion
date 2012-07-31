@@ -186,7 +186,7 @@ function Disk() {
 
         $('a.button-item').on('click', function() {
             if($(this).attr('rel') === 'video') {
-                var src = $a.children(':hidden').val();
+                var src = $(this).children(':hidden').val();
                 document.vlc.setAttribute('target', 'file:///' + src);
                 $.fancybox({ href: '#div-vlc', title: src, autosize: true });
                 remote.enableCross = false;
