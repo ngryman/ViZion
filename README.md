@@ -1,6 +1,8 @@
 ViZion
 ======
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ngryman/ViZion.svg)](https://greenkeeper.io/)
+
 OS for multimedia box in HTML and running on Node.JS
 
 ## Warning
